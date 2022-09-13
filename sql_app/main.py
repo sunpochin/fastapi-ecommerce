@@ -14,8 +14,7 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
+    "https://vue2-ecommerce.netlify.app",
     "http://localhost",
     "http://localhost:8080",
 ]
