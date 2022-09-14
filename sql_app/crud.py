@@ -24,8 +24,21 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def get_users(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.User).offset(skip).limit(limit).all()
+
+
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
+    # return db.query(models.Item.delete())
+
+
+def delete_items(db: Session, skip: int = 0, limit: int = 100):
+    num = db.query(models.Item).delete()
+    db.commit()
+    # return 
+    # return db.query(models.Item.delete())
+    
 
 
 def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
@@ -34,3 +47,5 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
