@@ -10,48 +10,42 @@ import json
 client = TestClient(app)
 
 
-def test_songs(test_app):
-    response = test_app.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"name": "sql_app"}
+# def test_get_users(test_app):
+#     response = test_app.get("/users")
+#     print('hahaha')
+#     resjson = response.json()
+#     assert response.json()[0]['email'] == "sunpochin@gmail.com"
+#     assert response.json()[0]['id'] == 1
+#     # assert len(resjson[0]['items']) == 7
+# #   assert response.json()[0]['items'] == 1
+#     assert response.status_code == 200
 
 
-def test_get_users(test_app):
-    response = test_app.get("/users")
-    print('hahaha')
-    resjson = response.json()
-    assert response.json()[0]['email'] == "sunpochin@gmail.com"
-    assert response.json()[0]['id'] == 1
-    # assert len(resjson[0]['items']) == 7
-#   assert response.json()[0]['items'] == 1
-    assert response.status_code == 200
-
-
-def test_delete(test_app):
-    test_add(test_app)
-    test_add(test_app)
-    response = requests.get('http://localhost:8000/items/delete/1')
-    assert response.json() == 2
-    response = requests.get('http://localhost:8000/items')
-    assert len(response.json()) == 1
+# def test_delete(test_app):
+#     test_add(test_app)
+#     test_add(test_app)
+#     response = requests.get('http://localhost:8000/items/delete/1')
+#     assert response.json() == 2
+#     response = requests.get('http://localhost:8000/items')
+#     assert len(response.json()) == 1
 
 # number of items should + 1
 def test_add(test_app):
     response = requests.get('http://localhost:8000/items')
-    assert response.json() == []
+    num = len(response.json())
+    print('num: ', num)
 
     itemtoadd = {
-        "id": 78912,
         "title": "Jason Sweat",
-        "description": "a nice sweat",
+        "product_id": "prod_2",
         "Price": 18.00
     }
     response = requests.post(
-        'http://localhost:8000/users/1/items', json=itemtoadd)
+        'http://localhost:8000/items/add', json=itemtoadd)
 
     response = requests.get('http://localhost:8000/items')
-    assert response.json()[0]['title'] == itemtoadd['title']
-    assert len(response.json()) == 1
+    # assert response.json()[0]['title'] == itemtoadd['title']
+    assert len(response.json()) == num + 1
 
     test_add_item = {"id": 100, "title": "title3"}
 
