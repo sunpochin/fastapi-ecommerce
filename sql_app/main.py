@@ -8,6 +8,11 @@ from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+import logging
+logger = logging.getLogger("api")
+
+import uvicorn
+from uvicorn.config import LOGGING_CONFIG
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -40,6 +45,8 @@ def get_db():
 
 @app.get('/')
 def read_root():
+    logger.debug("THIS IS A DEBUG LOG")
+    logger.error("SOMETHING WENT VERY VERY WRONG")
     return {'name': 'sql_app'}
 
 
@@ -75,17 +82,23 @@ def read_root():
 @app.get("/items/")
 def get_items(db: Session = Depends(get_db)):
     items = crud.get_items(db)
+    logger.error("SOMETHING WENT VERY VERY WRONG", items[0])
+    return items
+
+
+@app.get("/items/{product_id}")
+def get_items_by_product(db: Session = Depends(get_db), product_id: str = "-1", skip: int = 0, limit: int = 100):
+    items = crud.get_items_by_product(db, product_id=product_id)
+    logger.error("len(items)", len(items))
     return items
 
 
 @app.post("/items/add", response_model=schemas.Item)
-def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    # crud.
+def add_item(item: schemas.Item, db: Session = Depends(get_db)):
+    logger.error("SOMETHING WENT VERY VERY WRONG")
+    # print('cnt: ', crud.get_item_cnt(db=db, item_id=item.id))
     return crud.create_item(db=db, item=item)
-
-# @app.post("/items/add")
-# def add_item(item=schemas.ItemCreate, db: Session = Depends(get_db)):
-#     return crud.create_user_item(db=db, item=item, user_id=-1)
+# def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/items/decrease/{item_id}")
@@ -100,6 +113,14 @@ def delete_all_items(db: Session = Depends(get_db)):
     return items
 
 
+# https://stackoverflow.com/questions/63809553/how-to-run-fastapi-application-from -poetry
+
 def start():
     """Launched with `poetry run start` at root level"""
-    uvicorn.run("app:main", host="0.0.0.0", port=8000, reload=True)
+    # https: // github.com/tiangolo/fastapi/issues/1508
+    log_config = uvicorn.config.LOGGING_CONFIG
+    log_config["formatters"]["access"]["fmt"] = "%(asctime)s - %(levelname)s - %(message)s"
+    log_config["formatters"]["default"]["fmt"] = "%(asctime)s - %(levelname)s - %(message)s"
+    LOGGING_CONFIG["formatters"]["default"]["fmt"] = "%(asctime)s [%(name)s] %(levelprefix)s %(message)s"
+    uvicorn.run("sql_app.main:app", host="0.0.0.0",
+                port=8000, reload=True, log_config=log_config, )

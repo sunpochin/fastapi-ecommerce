@@ -52,8 +52,13 @@ def delete_item(db: Session, item_id: int = -1):
 #     return db_item
 
 def get_item_cnt(db: Session, item_id):
-    xx = db.query(models.Item).filter(models.Item.id == item_id)
-    print('xx: ', xx)
+    return 1
+    # xx = db.query(models.Item).filter(models.Item.id == item_id)
+    # print('xx: ', xx)
+
+
+def get_items_by_product(db: Session, product_id: str, skip: int = 0, limit: int = 100):
+    return db.query(models.Item).filter(models.Item.product_id == product_id).offset(skip).limit(limit).all()
 
 
 def create_item(db: Session, item: schemas.ItemCreate):
