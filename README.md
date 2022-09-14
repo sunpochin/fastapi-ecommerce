@@ -32,7 +32,7 @@ The application has the following endpoints:
 5. Run the server:
 
     ```sh
-    (venv)$ uvicorn main:app --reload
+    (venv)$ uvicorn sql_app.main:app --reload
     ```
     
  6. Navigate to [http://localhost:8000/](http://localhost:8000/) in your favorite web browser.

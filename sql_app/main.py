@@ -35,6 +35,11 @@ def get_db():
     finally:
         db.close()
 
+@app.get('/')
+def read_root():
+    return {'name': 'sql_app'}
+
+
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
