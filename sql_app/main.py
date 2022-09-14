@@ -74,3 +74,8 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+
+def start():
+    """Launched with `poetry run start` at root level"""
+    uvicorn.run("app:main", host="0.0.0.0", port=8000, reload=True)

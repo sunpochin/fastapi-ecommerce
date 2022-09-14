@@ -1,10 +1,10 @@
 from starlette.testclient import TestClient
 
-from app.main import app
+from sql_app.main import app
 
 client = TestClient(app)
 
-def test_ping(test_app):
-    response = test_app.get("/ping")
+def test_songs(test_app):
+    response = test_app.get("/")
     assert response.status_code == 200
-    assert response.json() == {"ping": "pong!"}
+    assert response.json() == {"name": "sql_app"}

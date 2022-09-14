@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "fastapi-ecommerce"
+version = "0.1.0"
+description = "a backend for my ecommerce site"
+authors = ["sunpochin"]
+readme = "README.md"
+packages = [{include = "sql_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.28.1"
+fastapi = "^0.83.0"
+SQLAlchemy = "^1.4.41"
+pytest = "^7.1.3"
+
+[tool.poetry.scripts]
+start = "sql_app.main:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
