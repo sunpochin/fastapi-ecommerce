@@ -71,14 +71,14 @@ def create_item_for_user(
 
 
 @app.get("/items/" )
-def delete_items(db: Session = Depends(get_db)):
+def get_items(db: Session = Depends(get_db)):
     items = crud.get_items(db)
     return items
 
 
-@app.get("/deleteitems/")
-def delete_items(db: Session = Depends(get_db)):
-    items = crud.delete_items(db)
+@app.get("/deleteallitems/")
+def delete_all_items(db: Session = Depends(get_db)):
+    items = crud.delete_all_items(db)
     return items
 
 

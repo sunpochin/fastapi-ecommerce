@@ -33,7 +33,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
     # return db.query(models.Item.delete())
 
 
-def delete_items(db: Session, skip: int = 0, limit: int = 100):
+def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     num = db.query(models.Item).delete()
     db.commit()
     # return 

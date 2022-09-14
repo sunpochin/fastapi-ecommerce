@@ -28,17 +28,21 @@ def test_get_users(test_app):
 
 
 def test_add(test_app):
-    response = requests.get('http://localhost:8000/deleteitems')
-
-    response = requests.post('http://localhost:8000/users/1/items', json={
-        "id": 78912,
-        "title": "Jason Sweet",
-        "Quantity": 1,
-        "Price": 18.00
-    })
     response = requests.get('http://localhost:8000/items')
-    assert response.json() == "haha"
-    # assert response.json()['id'] == "haha"
+    assert response.json() == []
+
+    itemtoadd = {
+        "id": 78912,
+        "title": "Jason Sweat",
+        "description": "a nice sweat",
+        "Price": 18.00
+    }
+    response = requests.post(
+        'http://localhost:8000/users/1/items', json=itemtoadd)
+
+    response = requests.get('http://localhost:8000/items')
+    assert response.json()[0]['title'] == itemtoadd['title']
+    assert len(response.json()) == 1
 
     test_add_item = {"id": 100, "title": "title3"}
 
