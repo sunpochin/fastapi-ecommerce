@@ -36,9 +36,12 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     num = db.query(models.Item).delete()
     db.commit()
-    # return 
-    # return db.query(models.Item.delete())
     
+
+def delete_item(db: Session, item_id: int = -1):
+    num = db.query(models.Item).filter(models.Item.id == item_id).delete()
+    db.commit()
+    return num
 
 
 def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):

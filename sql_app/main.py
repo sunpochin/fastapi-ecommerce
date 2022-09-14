@@ -28,6 +28,8 @@ app.add_middleware(
 )
 
 # Dependency
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -35,10 +37,10 @@ def get_db():
     finally:
         db.close()
 
+
 @app.get('/')
 def read_root():
     return {'name': 'sql_app'}
-
 
 
 @app.post("/users/", response_model=schemas.User)
@@ -70,10 +72,16 @@ def create_item_for_user(
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
-@app.get("/items/" )
+@app.get("/items/")
 def get_items(db: Session = Depends(get_db)):
     items = crud.get_items(db)
     return items
+
+
+@app.get("/items/delete/{item_id}")
+def delete_item(item_id: int, db: Session = Depends(get_db)):
+    id = crud.delete_item(db, item_id=item_id)
+    return id
 
 
 @app.get("/deleteallitems/")

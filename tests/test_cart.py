@@ -27,6 +27,15 @@ def test_get_users(test_app):
     assert response.status_code == 200
 
 
+def test_delete(test_app):
+    test_add(test_app)
+    test_add(test_app)
+    response = requests.get('http://localhost:8000/items/delete/1')
+    assert response.json() == 2
+    response = requests.get('http://localhost:8000/items')
+    assert len(response.json()) == 1
+
+
 def test_add(test_app):
     response = requests.get('http://localhost:8000/items')
     assert response.json() == []
