@@ -3,15 +3,13 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from .database import Base
 
-class Song(Base):
-    __tablename__ = 'songs'
+# class Song(Base):
+#     __tablename__ = 'songs'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String(128), nullable=False)
-    artist = Column(String(128), nullable=False)
-    release_date = Column(Date, nullable=False)
-
-
+#     id = Column(Integer, primary_key=True)
+#     title = Column(String(128), nullable=False)
+#     artist = Column(String(128), nullable=False)
+#     release_date = Column(Date, nullable=False)
 
 
 class User(Base):
@@ -32,6 +30,7 @@ class Item(Base):
     title = Column(String, index=True)
     description = Column(String, index=True)
     price = Column(String, index=True)
+    quantity = Column(Integer)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="items")

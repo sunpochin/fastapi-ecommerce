@@ -44,11 +44,35 @@ def delete_item(db: Session, item_id: int = -1):
     return num
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
+# def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
+#     db_item = models.Item(**item.dict(), owner_id=user_id)
+#     db.add(db_item)
+#     db.commit()
+#     db.refresh(db_item)
+#     return db_item
+
+def get_item_cnt(db: Session, item_id):
+    xx = db.query(models.Item).filter(models.Item.id == item_id)
+    print('xx: ', xx)
+
+
+def create_item(db: Session, item: schemas.ItemCreate):
+    db_item = models.Item(**item.dict(), owner_id=-1)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
     return db_item
+
+def add_item(db: Session, item_id: int):
+    # , item: schemas.ItemCreate
+    num = db.query(models.Item).filter(models.Item.id ==
+        item_id).update({'quantity': models.Item + 1})
+    return num
+
+
+def decrease_item(db: Session, item_id: int):
+    num = db.query(models.Item).filter(models.Item.id == item_id).update({'quantity': models.Item + 1})
+    return num
+
 
 

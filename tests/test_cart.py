@@ -35,7 +35,7 @@ def test_delete(test_app):
     response = requests.get('http://localhost:8000/items')
     assert len(response.json()) == 1
 
-
+# number of items should + 1
 def test_add(test_app):
     response = requests.get('http://localhost:8000/items')
     assert response.json() == []
