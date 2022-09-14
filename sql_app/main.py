@@ -86,19 +86,23 @@ def get_items(db: Session = Depends(get_db)):
     return items
 
 
-@app.get("/items/{product_id}")
+@app.get("/items/get/{product_id}")
 def get_items_by_product(db: Session = Depends(get_db), product_id: str = "-1", skip: int = 0, limit: int = 100):
     items = crud.get_items_by_product(db, product_id=product_id)
     logger.error("len(items)", len(items))
-    return items
+    return len(items)
 
 
 @app.post("/items/add", response_model=schemas.Item)
-def add_item(item: schemas.Item, db: Session = Depends(get_db)):
-    logger.error("SOMETHING WENT VERY VERY WRONG")
-    # print('cnt: ', crud.get_item_cnt(db=db, item_id=item.id))
+def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
+    logger.error("item: ", item.product_id)
     return crud.create_item(db=db, item=item)
-# def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
+
+
+# @app.post("/items/add", response_model=schemas.Item)
+# def add_item(item: schemas.Item, db: Session = Depends(get_db)):
+#     logger.error("item: ", item.product_id)
+#     return crud.create_item(db=db, item=item)
 
 
 @app.get("/items/decrease/{item_id}")
