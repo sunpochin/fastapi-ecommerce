@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from . import models, schemas
+import logging
+logger = logging.getLogger("api")
+
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -18,7 +21,8 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 def create_user(db: Session, user: schemas.UserCreate):
     fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    db_user = models.User(
+        email=user.email, hashed_password=fake_hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -34,25 +38,15 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
     # return db.query(models.Item.delete())
 
 
-# https://groups.google.com/g/sqlalchemy/c/c-qE9-KmVp8?pli=1
-# https://www.navicat.com/cht/company/aboutus/blog/1745-using-the-sql-count-function-with-group-by.html
-
-# SELECT product_id, COUNT(*) from items GROUP BY product_id;
-def get_cate(db: Session, skip: int = 0, limit: int = 100):
-    subs = db.query(models.Item.product_id, func.count(models.Item.product_id)).group_by(models.Item.product_id)
-    return subs
-
-
 def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     num = db.query(models.Item).delete()
     db.commit()
-    
 
-def delete_item(db: Session, item_id: int = -1):
+
+def delete_item(db: Session, item_id):
     num = db.query(models.Item).filter(models.Item.id == item_id).delete()
     db.commit()
     return num
-
 
 # def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
 #     db_item = models.Item(**item.dict(), owner_id=user_id)
@@ -60,6 +54,7 @@ def delete_item(db: Session, item_id: int = -1):
 #     db.commit()
 #     db.refresh(db_item)
 #     return db_item
+
 
 def get_item_cnt(db: Session, item_id):
     return 1
@@ -71,6 +66,15 @@ def get_items_by_product(db: Session, product_id: str, skip: int = 0, limit: int
     return db.query(models.Item).filter(models.Item.product_id == product_id).offset(skip).limit(limit).all()
 
 
+# https://groups.google.com/g/sqlalchemy/c/c-qE9-KmVp8?pli=1
+# https://www.navicat.com/cht/company/aboutus/blog/1745-using-the-sql-count-function-with-group-by.html
+# SELECT product_id, COUNT(*) from items GROUP BY product_id;
+def get_cate(db: Session, skip: int = 0, limit: int = 100):
+    subs = db.query(models.Item.product_id, func.count(
+        models.Item.product_id)).group_by(models.Item.product_id)
+    return subs
+
+
 def create_item(db: Session, item: schemas.ItemCreate):
     db_item = models.Item(**item.dict(), owner_id=-1)
     db.add(db_item)
@@ -78,16 +82,44 @@ def create_item(db: Session, item: schemas.ItemCreate):
     db.refresh(db_item)
     return db_item
 
+# https://groups.google.com/g/sqlalchemy/c/tVc19TUJQu8
+def get_or_create(db: Session, item: schemas.ItemCreate):
+    logger.error("get_or_create: ", item)
+    # logger.info("info get_or_create: ", item)
+
+    db_item = db.query(models.Item).filter(
+        models.Item.product_id == item.product_id).first()
+    return db_item
+
+    if db_item is None:
+        db_item = models.Item(**item.dict())
+    else:
+        db_item = db.query(models.Item).filter(models.Item.product_id == item.product_id)\
+            .update({"product_id": "spongebob"}, synchronize_session="fetch")
+    return db_item
+
+    # db_item = db.query(models.Item).filter(models.Item.product_id == item.product_id)
+    # logger.error('db_item: ', db_item)
+    # if db_item == None:
+    #     db_item = models.Item(**item.dict())
+    # else:
+    #     db_item.update({'quantity': models.Item.quantity + 1})
+    # \
+    #     .update({'quantity': models.Item.quantity + 1})
+    # db.add(db_item)
+    # db.commit()
+    # db.refresh(db_item)
+    return db_item
+
+
 def add_item(db: Session, item_id: int):
     # , item: schemas.ItemCreate
     num = db.query(models.Item).filter(models.Item.id ==
-        item_id).update({'quantity': models.Item + 1})
+                                       item_id).update({'quantity': models.Item + 1})
     return num
 
 
 def decrease_item(db: Session, item_id: int):
-    num = db.query(models.Item).filter(models.Item.id == item_id).update({'quantity': models.Item + 1})
+    num = db.query(models.Item).filter(models.Item.id ==
+                                       item_id).update({'quantity': models.Item + 1})
     return num
-
-
-

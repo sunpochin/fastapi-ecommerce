@@ -83,6 +83,7 @@ def read_root():
 @app.get("/items/")
 def get_items(db: Session = Depends(get_db)):
     items = crud.get_items(db)
+    logger.error("len(items)", len(items))
     return items
 
 
@@ -100,16 +101,18 @@ def get_items_by_product(db: Session = Depends(get_db), product_id: str = "-1", 
     return len(items)
 
 
-@app.post("/items/add", response_model=schemas.Item)
-def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    logger.error("item: ", item.product_id)
-    return crud.create_item(db=db, item=item)
-
-
 # @app.post("/items/add", response_model=schemas.Item)
-# def add_item(item: schemas.Item, db: Session = Depends(get_db)):
+# def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
 #     logger.error("item: ", item.product_id)
-#     return crud.create_item(db=db, item=item)
+#     ret = crud.get_or_create(db=db, item=item)
+#     return ret
+
+
+@app.post("/items/add", response_model=schemas.Item)
+def add_item(item: schemas.Item, db: Session = Depends(get_db)):
+    # logger.error("item: ", item.product_id)
+    return crud.get_or_create(db=db, item=item)
+    return crud.create_item(db=db, item=item)
 
 
 @app.get("/items/decrease/{item_id}")
