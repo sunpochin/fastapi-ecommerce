@@ -1,7 +1,8 @@
+from sqlalchemy.engine import result
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from . import models, schemas
-
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -31,6 +32,15 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
     # return db.query(models.Item.delete())
+
+
+# https://groups.google.com/g/sqlalchemy/c/c-qE9-KmVp8?pli=1
+# https://www.navicat.com/cht/company/aboutus/blog/1745-using-the-sql-count-function-with-group-by.html
+
+# SELECT product_id, COUNT(*) from items GROUP BY product_id;
+def get_cate(db: Session, skip: int = 0, limit: int = 100):
+    subs = db.query(models.Item.product_id, func.count(models.Item.product_id)).group_by(models.Item.product_id)
+    return subs
 
 
 def delete_all_items(db: Session, skip: int = 0, limit: int = 100):

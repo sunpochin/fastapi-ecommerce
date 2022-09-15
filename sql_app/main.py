@@ -5,6 +5,7 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -82,8 +83,14 @@ def read_root():
 @app.get("/items/")
 def get_items(db: Session = Depends(get_db)):
     items = crud.get_items(db)
-    logger.error("SOMETHING WENT VERY VERY WRONG", items[0])
     return items
+
+
+@app.get("/items/cate")
+def get_items(db: Session = Depends(get_db)):
+    items = crud.get_cate(db)
+    return items
+
 
 
 @app.get("/items/get/{product_id}")
