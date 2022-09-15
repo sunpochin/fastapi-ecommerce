@@ -79,8 +79,6 @@ def create_item(db: Session, item: schemas.ItemCreate):
     return db_item
 
 # https://groups.google.com/g/sqlalchemy/c/tVc19TUJQu8
-
-
 def get_or_create(db: Session, item: schemas.ItemCreate):
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
@@ -112,11 +110,16 @@ def add_item(db: Session, item_id: int):
 
 
 def decrease_item(db: Session, product_id: str):
-    newquan = -1
     db_item = db.query(models.Item).filter(
         models.Item.product_id == product_id).first()
     newquan = db_item.quantity - 1
-    ret = db.query(models.Item).filter(
-        models.Item.product_id == product_id).update({"quantity": newquan}, synchronize_session="fetch")
+    if newquan <= 0:
+        # db_item.delete()
+        ret = db.query(models.Item).filter(
+            models.Item.product_id == product_id).delete()
+        pass
+    else:
+        ret = db.query(models.Item).filter(
+            models.Item.product_id == product_id).update({"quantity": newquan}, synchronize_session="fetch")
     db.commit()
     return newquan
