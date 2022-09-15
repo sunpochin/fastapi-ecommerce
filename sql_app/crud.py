@@ -70,8 +70,9 @@ def get_items_by_product(db: Session, product_id: str, skip: int = 0, limit: int
 # https://www.navicat.com/cht/company/aboutus/blog/1745-using-the-sql-count-function-with-group-by.html
 # SELECT product_id, COUNT(*) from items GROUP BY product_id;
 def get_cate(db: Session, skip: int = 0, limit: int = 100):
-    subs = db.query(models.Item.product_id, func.count(
-        models.Item.product_id), models.Item.quantity).group_by(models.Item.product_id)
+    # subs = db.query(models.Item.product_id, func.count(
+    #     models.Item.product_id), models.Item.quantity).group_by(models.Item.product_id)
+    subs = db.query(models.Item.product_id, models.Item.quantity)
     return subs
 
 
@@ -83,16 +84,20 @@ def create_item(db: Session, item: schemas.ItemCreate):
     return db_item
 
 # https://groups.google.com/g/sqlalchemy/c/tVc19TUJQu8
+
+
 def get_or_create(db: Session, item: schemas.ItemCreate):
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
     if db_item is None:
-        db_item = models.Item(**item.dict(), quantity=1)
+        db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
         db.add(db_item)
+        logger.error("get_or_create db_item: ", db_item)
     else:
+        newquan = db_item.quantity + 1
         ret = db.query(models.Item).filter(models.Item.product_id == item.product_id)\
-            .update({"product_id": "spongebob"}, synchronize_session="fetch")
-    logger.error("get_or_create db_item: ", ret)
+            .update({"quantity": newquan}, synchronize_session="fetch")
+        logger.error("get_or_create db_item: ", ret)
     # logger.error("get_or_create db_item: ", db_item.quantity)
     db.commit()
     db.refresh(db_item)

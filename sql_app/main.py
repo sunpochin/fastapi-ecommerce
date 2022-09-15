@@ -109,7 +109,7 @@ def get_items_by_product(db: Session = Depends(get_db), product_id: str = "-1", 
 
 
 @app.post("/items/add", response_model=schemas.Item)
-def add_item(item: schemas.Item, db: Session = Depends(get_db)):
+def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
     logger.error("items/add: ", item)
     return crud.get_or_create(db=db, item=item)
     return crud.create_item(db=db, item=item)
