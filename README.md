@@ -1,13 +1,13 @@
 # fastapi-ecommerce
 
 ## live demo:
-[https://fastapi-pac.onrender.com/](https://fastapi-pac.onrender.com/)
+[https://fastapi-pac.onrender.com/docs](https://fastapi-pac.onrender.com/docs)
 
 ## intro
 A simple application written using [FastAPI](https://fastapi.tiangolo.com/). 
 The application has the following endpoints:
 
-1. [http://localhost:8000/items](http://localhost:8000/items) displays the items in cart
+1. [https://fastapi-pac.onrender.com/items](https://fastapi-pac.onrender.com/items) displays the items in cart
 
 ## Want to use this project?
 
