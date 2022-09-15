@@ -43,11 +43,6 @@ def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     db.commit()
 
 
-def delete_item(db: Session, item_id):
-    num = db.query(models.Item).filter(models.Item.id == item_id).delete()
-    db.commit()
-    return num
-
 # def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
 #     db_item = models.Item(**item.dict(), owner_id=user_id)
 #     db.add(db_item)
@@ -101,22 +96,13 @@ def get_or_create(db: Session, item: schemas.ItemCreate):
     # logger.error("get_or_create db_item: ", db_item.quantity)
     db.commit()
     db.refresh(db_item)
-
     return db_item
 
-    # db_item = db.query(models.Item).filter(models.Item.product_id == item.product_id)
-    # logger.error('db_item: ', db_item)
-    # if db_item == None:
-    #     db_item = models.Item(**item.dict())
-    # else:
-    #     db_item.update({'quantity': models.Item.quantity + 1})
-    # \
-    #     .update({'quantity': models.Item.quantity + 1})
-    # db.add(db_item)
-    # db.commit()
-    # db.refresh(db_item)
-    return db_item
 
+def delete_item(db: Session, item_id):
+    num = db.query(models.Item).filter(models.Item.id == item_id).delete()
+    db.commit()
+    return num
 
 def add_item(db: Session, item_id: int):
     # , item: schemas.ItemCreate
@@ -125,7 +111,12 @@ def add_item(db: Session, item_id: int):
     return num
 
 
-def decrease_item(db: Session, item_id: int):
-    num = db.query(models.Item).filter(models.Item.id ==
-                                       item_id).update({'quantity': models.Item + 1})
-    return num
+def decrease_item(db: Session, product_id: str):
+    newquan = -1
+    db_item = db.query(models.Item).filter(
+        models.Item.product_id == product_id).first()
+    newquan = db_item.quantity - 1
+    ret = db.query(models.Item).filter(
+        models.Item.product_id == product_id).update({"quantity": newquan}, synchronize_session="fetch")
+    db.commit()
+    return newquan

@@ -1,5 +1,7 @@
 # main.py
 
+from uvicorn.config import LOGGING_CONFIG
+import uvicorn
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -12,8 +14,6 @@ from .database import SessionLocal, engine
 import logging
 logger = logging.getLogger("api")
 
-import uvicorn
-from uvicorn.config import LOGGING_CONFIG
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -93,7 +93,6 @@ def get_items(db: Session = Depends(get_db)):
     return items
 
 
-
 @app.get("/items/get/{product_id}")
 def get_items_by_product(db: Session = Depends(get_db), product_id: str = "-1", skip: int = 0, limit: int = 100):
     items = crud.get_items_by_product(db, product_id=product_id)
@@ -115,10 +114,10 @@ def add_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
     return crud.create_item(db=db, item=item)
 
 
-@app.get("/items/decrease/{item_id}")
-def decrease_item(item_id: int, db: Session = Depends(get_db)):
-    id = crud.delete_item(db, item_id=item_id)
-    return id
+@app.get("/items/decrease/{product_id}")
+def decrease_item(product_id: str, db: Session = Depends(get_db)):
+    item = crud.decrease_item(db=db, product_id=product_id)
+    return item
 
 
 @app.get("/items/deleteall")
