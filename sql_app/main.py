@@ -46,9 +46,7 @@ def get_db():
 
 @app.get('/')
 def read_root():
-    logger.debug("THIS IS A DEBUG LOG")
-    logger.error("SOMETHING WENT VERY VERY WRONG")
-    return {'name': 'sql_app'}
+    return {'name': 'pac'}
 
 
 # @app.post("/users/", response_model=schemas.User)
