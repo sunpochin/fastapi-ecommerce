@@ -53,7 +53,7 @@
   "memory": "128",
   "taskRoleArn": null,
   "compatibilities": ["EXTERNAL", "EC2"],
-  "taskDefinitionArn": "arn:aws:ecs:ap-south-1:737968743801:task-definition/DeploymentContainer",
+  "taskDefinitionArn": "arn:aws:ecs:ap-south-1:737968743801:task-definition/DeploymentContainer:22",
   "family": "DeploymentContainer",
   "requiresAttributes": [
     {
