@@ -29,7 +29,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "public.ecr.aws/b9r2u8v1/fastapi-pac",
+      "image": "789819000571.dkr.ecr.ap-southeast-1.amazonaws.com/fastapi-pac",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
