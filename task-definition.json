@@ -29,7 +29,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "737968743801.dkr.ecr.ap-south-1.amazonaws.com/host-react-app",
+      "image": "public.ecr.aws/b9r2u8v1/fastapi-pac",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -46,14 +46,14 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "ReactAppContainer"
+      "name": "FastapiContainer"
     }
   ],
   "placementConstraints": [],
   "memory": "128",
   "taskRoleArn": null,
   "compatibilities": ["EXTERNAL", "EC2"],
-  "taskDefinitionArn": "arn:aws:ecs:ap-south-1:737968743801:task-definition/DeploymentContainer:8",
+  "taskDefinitionArn": "arn:aws:ecs:ap-south-1:737968743801:task-definition/DeploymentContainer",
   "family": "DeploymentContainer",
   "requiresAttributes": [
     {
