@@ -34,8 +34,6 @@ app.add_middleware(
 )
 
 # Dependency
-
-
 def get_db():
     db = SessionLocal()
     try:
@@ -46,7 +44,7 @@ def get_db():
 
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
-    return 'sep 20 02:06'
+    return 'sep 20 07:35'
 
 
 # @app.post("/users/", response_model=schemas.User)
