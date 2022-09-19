@@ -43,13 +43,6 @@ def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     db.commit()
 
 
-# def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-#     db_item = models.Item(**item.dict(), owner_id=user_id)
-#     db.add(db_item)
-#     db.commit()
-#     db.refresh(db_item)
-#     return db_item
-
 
 def get_item_cnt(db: Session, item_id):
     return 1
@@ -72,7 +65,8 @@ def get_cate(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_item(db: Session, item: schemas.ItemCreate):
-    db_item = models.Item(**item.dict(), owner_id=-1)
+    # db_item = models.Item(**item.dict(), owner_id=-1)
+    db_item = models.Item(**item.dict())
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
@@ -83,7 +77,8 @@ def get_or_create(db: Session, item: schemas.ItemCreate):
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
     if db_item is None:
-        db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
+        # db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
+        db_item = models.Item(**item.dict(), quantity=1)
         db.add(db_item)
         logger.error("get_or_create db_item: ", db_item)
     else:

@@ -24,13 +24,13 @@ The application has the following endpoints:
 3. Install the requirements:
 
     ```sh
-    (venv)$ pip install -r requirements.txt
+    (venv)$ pip3 install -r requirements.txt
     ```
 
 4. Initialize the database:
 
     ```sh
-    (venv)$ python init_db.py
+    (venv)$ python3 init_db.py
     ```
 
 5. Run the server:
