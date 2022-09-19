@@ -46,7 +46,11 @@ def get_db():
 
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
-    return 'set 19 15:44'
+    items = crud.get_items(db)
+    logger.error("len(items)", type(items) )
+    items.append('set 19 15:44')
+
+    return items
 
 
 # @app.post("/users/", response_model=schemas.User)
