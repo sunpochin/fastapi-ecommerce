@@ -45,8 +45,8 @@ def get_db():
 
 
 @app.get('/')
-def read_root():
-    return {'name': 'pac'}
+def read_root(db: Session = Depends(get_db)):
+    return 'sep 20 02:06'
 
 
 # @app.post("/users/", response_model=schemas.User)

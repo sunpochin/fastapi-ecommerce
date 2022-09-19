@@ -15,7 +15,7 @@ class ItemCreate(ItemBase):
 class Item(ItemBase):
     id: int
     description: Union[str, None] = None
-    owner_id: int
+    # owner_id: int
 
     class Config:
         orm_mode = True
