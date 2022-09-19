@@ -35,7 +35,7 @@ env:
   AWS_REGION: ap-southeast-1                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: fastapi-pac          # set this to your Amazon ECR repository name
   ECS_SERVICE: fastService1   # set this to your Amazon ECS service name
-  ECS_CLUSTER: arn:aws:ecs:ap-southeast-1:789819000571:cluster/fastCluster2    # set this to your Amazon ECS cluster name
+  ECS_CLUSTER: fastCluster    # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: FastapiContainer           # set this to the name of the container in the
