@@ -46,7 +46,7 @@ def get_db():
 
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
-    return 'sep 20 01:15'
+    return 'sep 20 01:49'
 
 
 # @app.post("/users/", response_model=schemas.User)
