@@ -1,15 +1,17 @@
 # fastapi-ecommerce
 
 ## live demo:
-[https://fastapi-pac.onrender.com/docs](https://fastapi-pac.onrender.com/docs)
+[https://sunpochin.lol/docs](https://sunpochin.lol/docs)
+
+## notes on aws ecs CD
+https://reactdotjs.hashnode.dev/github-action-cd-to-aws-ecs-ecr-part-1
+The codes are in this branch: https://github.com/sunpochin/fastapi-ecommerce/tree/ecs_fastapi
 
 ## intro
-A simple application written using [FastAPI](https://fastapi.tiangolo.com/). 
-The application has the following endpoints:
+Using [FastAPI](https://fastapi.tiangolo.com/). 
+The application serve as backend of my frontend project.
 
-1. [https://fastapi-pac.onrender.com/items](https://fastapi-pac.onrender.com/items) displays the items in cart
-
-## Want to use this project?
+## Use this project locally
 
 1.  ```sh
     git clone git@github.com:sunpochin/fastapi-ecommerce.git
