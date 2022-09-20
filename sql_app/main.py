@@ -54,7 +54,6 @@ load_dotenv()
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
     SQLALCHEMY_DATABASE_URL = os.getenv("DBHOST")
-    return 'sep 20 08:16: '
     return 'sep 20 08:16: ' + SQLALCHEMY_DATABASE_URL
 
 
