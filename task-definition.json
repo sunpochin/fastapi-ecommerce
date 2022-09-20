@@ -25,7 +25,7 @@
 			"workingDirectory": null,
 			"secrets": [
 				{
-					"valueFrom": "arn:aws:secretsmanager:ap-southeast-1:789819000571:secret:ecs/fastapi/dbhost-ZZxIqd",
+					"valueFrom": "arn:aws:ssm:ap-southeast-1:789819000571:parameter/DB_HOST",
 					"name": "DB_HOST"
 				}
 			],
@@ -34,7 +34,7 @@
 			"memoryReservation": null,
 			"volumesFrom": [],
 			"stopTimeout": null,
-			"image": "789819000571.dkr.ecr.ap-southeast-1.amazonaws.com/fastapi-pac:b2c1fb1ee199ff5be043a1a6828bc75c39b92cdf",
+			"image": "789819000571.dkr.ecr.ap-southeast-1.amazonaws.com/fastapi-pac:95865ca8606d10f6d05b8783e3ec449548d7350b",
 			"startTimeout": null,
 			"firelensConfiguration": null,
 			"dependsOn": null,
@@ -58,7 +58,7 @@
 	"memory": "128",
 	"taskRoleArn": "arn:aws:iam::789819000571:role/ecsTaskExecutionRole",
 	"compatibilities": ["EXTERNAL", "EC2"],
-	"taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:789819000571:task-definition/DeploymentContainer:59",
+	"taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:789819000571:task-definition/DeploymentContainer:66",
 	"family": "DeploymentContainer",
 	"requiresAttributes": [
 		{
@@ -71,12 +71,6 @@
 			"targetId": null,
 			"targetType": null,
 			"value": null,
-			"name": "ecs.capability.secrets.asm.environment-variables"
-		},
-		{
-			"targetId": null,
-			"targetType": null,
-			"value": null,
 			"name": "com.amazonaws.ecs.capability.task-iam-role"
 		},
 		{
@@ -84,6 +78,12 @@
 			"targetType": null,
 			"value": null,
 			"name": "ecs.capability.execution-role-ecr-pull"
+		},
+		{
+			"targetId": null,
+			"targetType": null,
+			"value": null,
+			"name": "ecs.capability.secrets.ssm.environment-variables"
 		}
 	],
 	"pidMode": null,
@@ -91,7 +91,7 @@
 	"networkMode": null,
 	"runtimePlatform": null,
 	"cpu": "1024",
-	"revision": 59,
+	"revision": 66,
 	"status": "ACTIVE",
 	"inferenceAccelerators": null,
 	"proxyConfiguration": null,
