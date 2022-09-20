@@ -1,5 +1,4 @@
 # main.py
-
 from uvicorn.config import LOGGING_CONFIG
 import uvicorn
 from typing import List
@@ -11,6 +10,11 @@ from sqlalchemy import func
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from dotenv import load_dotenv
+import os  # provides ways to access the Operating System and allows us to read the environment variables
+
+load_dotenv()
+
 import logging
 logger = logging.getLogger("api")
 
@@ -42,9 +46,15 @@ def get_db():
         db.close()
 
 
+from dotenv import load_dotenv
+import os  # provides ways to access the Operating System and allows us to read the environment variables
+
+load_dotenv()
+
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
-    return 'sep 20 07:35'
+    SQLALCHEMY_DATABASE_URL = os.getenv("DBHOST")
+    return 'sep 20 08:16: ' + SQLALCHEMY_DATABASE_URL
 
 
 # @app.post("/users/", response_model=schemas.User)
