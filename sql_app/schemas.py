@@ -15,6 +15,7 @@ class ItemCreate(ItemBase):
 class Item(ItemBase):
     id: int
     description: Union[str, None] = None
+    quantity: int
     # owner_id: int
 
     class Config:
