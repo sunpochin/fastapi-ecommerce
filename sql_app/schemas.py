@@ -16,7 +16,7 @@ class Item(ItemBase):
     id: int
     description: Union[str, None] = None
     quantity: int
-    # owner_id: int
+    owner_id: int
 
     class Config:
         orm_mode = True
@@ -31,7 +31,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
+    user_id: int
     is_active: bool
     items: List[Item] = []
 

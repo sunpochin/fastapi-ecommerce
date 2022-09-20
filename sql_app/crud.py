@@ -8,7 +8,7 @@ logger = logging.getLogger("api")
 
 
 def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
+    return db.query(models.User).filter(models.User.user_id == user_id).first()
 
 
 def get_user_by_email(db: Session, email: str):
@@ -29,6 +29,34 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
+    logger.error("create_user_item: ${0}".format(user_id))
+    # https://myapollo.com.tw/zh-tw/sqlalchemy-filter-vs-filter-by/
+    db_item = db.query(models.Item).filter(
+        models.Item.product_id == item.product_id, 
+        models.Item.owner_id == user_id).first()
+    logger.error("db_item: %s", db_item)
+    if db_item is None:
+        db_item = models.Item(**item.dict(), quantity=1, owner_id=user_id)
+        db.add(db_item)
+        logger.error("Create new db_item: ${0}".format(user_id))
+    else:
+        newquan = db_item.quantity + 1
+        ret = db.query(models.Item).filter(models.Item.product_id == item.product_id)\
+            .update({"quantity": newquan}, synchronize_session="fetch")
+        logger.error("Increase quantity db_item: ${0}".format(newquan))
+    # logger.error("get_or_create db_item: ", db_item.quantity)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+    # db_item = models.Item(**item.dict(), owner_id=user_id)
+    # db.add(db_item)
+    # db.commit()
+    # db.refresh(db_item)
+    # return db_item
+
+
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
@@ -41,7 +69,6 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 def delete_all_items(db: Session, skip: int = 0, limit: int = 100):
     num = db.query(models.Item).delete()
     db.commit()
-
 
 
 def get_item_cnt(db: Session, item_id):
@@ -73,6 +100,8 @@ def create_item(db: Session, item: schemas.ItemCreate):
     return db_item
 
 # https://groups.google.com/g/sqlalchemy/c/tVc19TUJQu8
+
+
 def get_or_create(db: Session, item: schemas.ItemCreate):
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
@@ -96,6 +125,7 @@ def delete_item(db: Session, item_id):
     num = db.query(models.Item).filter(models.Item.id == item_id).delete()
     db.commit()
     return num
+
 
 def add_item(db: Session, item_id: int):
     # , item: schemas.ItemCreate
