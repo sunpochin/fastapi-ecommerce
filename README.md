@@ -2,6 +2,10 @@
 
 ## live demo:
 [https://sunpochin.lol/docs](https://sunpochin.lol/docs)
+or
+[https://fastapi-pac.onrender.com/docs](https://fastapi-pac.onrender.com/docs)
+
+
 
 ## notes on aws ecs CD
 https://reactdotjs.hashnode.dev/github-action-cd-to-aws-ecs-ecr-part-1
