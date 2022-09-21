@@ -57,7 +57,7 @@ load_dotenv()
 @app.get('/')
 def read_root(db: Session = Depends(get_db)):
     # SQLALCHEMY_DATABASE_URL = os.getenv("DB_HOST")
-    return 'sep 20 18:18 '
+    return 'sep 21 12:59 '
 
 
 @app.post("/users/", response_model=schemas.User)
