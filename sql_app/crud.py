@@ -29,11 +29,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
+def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int = -1):
     logger.error("create_user_item: ${0}".format(user_id))
     # https://myapollo.com.tw/zh-tw/sqlalchemy-filter-vs-filter-by/
     db_item = db.query(models.Item).filter(
-        models.Item.product_id == item.product_id, 
+        models.Item.product_id == item.product_id,
         models.Item.owner_id == user_id).first()
     logger.error("db_item: %s", db_item)
     if db_item is None:
@@ -49,13 +49,6 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
-
-    # db_item = models.Item(**item.dict(), owner_id=user_id)
-    # db.add(db_item)
-    # db.commit()
-    # db.refresh(db_item)
-    # return db_item
-
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
@@ -103,19 +96,18 @@ def create_item(db: Session, item: schemas.ItemCreate):
 
 
 def get_or_create(db: Session, item: schemas.ItemCreate):
+    logger.error("get_or_create db_item: ")
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
     if db_item is None:
-        # db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
-        db_item = models.Item(**item.dict(), quantity=1)
+        db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
         db.add(db_item)
-        logger.error("get_or_create db_item: ", db_item)
+        logger.error("create db_item:")
     else:
         newquan = db_item.quantity + 1
         ret = db.query(models.Item).filter(models.Item.product_id == item.product_id)\
             .update({"quantity": newquan}, synchronize_session="fetch")
-        logger.error("get_or_create db_item: ", ret)
-    # logger.error("get_or_create db_item: ", db_item.quantity)
+        logger.error("update quantity %s", newquan)
     db.commit()
     db.refresh(db_item)
     return db_item
