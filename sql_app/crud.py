@@ -85,7 +85,6 @@ def get_cate(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_item(db: Session, item: schemas.ItemCreate):
-    # db_item = models.Item(**item.dict(), owner_id=-1)
     db_item = models.Item(**item.dict())
     db.add(db_item)
     db.commit()
@@ -100,7 +99,8 @@ def get_or_create(db: Session, item: schemas.ItemCreate):
     db_item = db.query(models.Item).filter(
         models.Item.product_id == item.product_id).first()
     if db_item is None:
-        db_item = models.Item(**item.dict(), quantity=1, owner_id=-1)
+        db_item = models.Item(**item.dict(), quantity=1)
+        # db_item = models.Item(**item.dict(), quantity=1)
         db.add(db_item)
         logger.error("create db_item:")
     else:
